@@ -29,15 +29,17 @@ Serve the app and API from the same origin for local login, for example by placi
 The repository now includes a runnable, dependency-free reference pipeline in `ink_ml.py`:
 
 - **RNN** encodes the source sequence and predicts ink density, wobble, and texture.
-- **GAN** proposes style controls and trains against the target style vector.
-- **DQN** selects a transformation action such as `add-wash` or `add-labels`.
+- **GAN** proposes style controls, scores real/fake style vectors, and trains both discriminator and generator signals.
+- **DQN** selects a transformation action such as `add-wash` or `add-labels` using replay memory, discounting, and a slowly blended target value.
 - **Dataset** is a reproducible synthetic starter set generated from graph prompts. Replace `make_dataset()` with licensed graph/diagram pairs before production training.
+- **Evaluation** creates a deterministic train/validation split and reports holdout mean-squared error on every epoch.
+- **Ingestion** accepts licensed JSONL records with `source`, `family`, and optional `target` fields through `load_jsonl_dataset()`.
 
 Run the training simulation:
 
 ```sh
 python3 train_dry_run.py --epochs 3 --dataset-size 24
-python3 -m unittest -v test_ink_ml.py
+python3 -m unittest -v test_ink_ml.py test_auth.py
 ```
 
 Run the local inference service and call it with `curl`:
