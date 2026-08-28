@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="pageTitle">Inkgraph — Turn anything into ink</title>
+  <meta name="google-client-id" content="">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Inkgraph home"><span class="brand-mark">i</span><span>inkgraph</span></a>
+      <nav class="topnav" aria-label="Primary navigation">
+        <a class="active" href="#studio" data-i18n="studio">Studio</a>
+        <a href="#library" data-i18n="library">Library</a>
+        <a href="#about" data-i18n="about">About</a>
+      </nav>
+      <div class="top-actions">
+        <label class="language-picker"><span class="sr-only">Language</span><select id="language-select" aria-label="Language"><option value="en">EN</option><option value="zh">中文</option><option value="ja">日本語</option></select></label>
+        <div id="google_translate_element" aria-label="Google Translate"></div>
+        <button class="icon-button" title="Toggle theme" aria-label="Toggle theme" id="theme-toggle">◐</button>
+        <button class="login-button" id="google-login" data-i18n="signIn">Sign in with Google</button>
+        <button class="local-login-button" id="local-login" data-i18n="localLogin">Local login</button>
+        <button class="avatar" aria-label="Open profile" hidden>AM</button>
+      </div>
+    </header>
+
+    <main id="studio" class="workspace">
+      <section class="intro">
+        <div>
+          <p class="eyebrow"><span class="status-dot"></span> <span data-i18n="newCanvas">Studio / New canvas</span></p>
+          <h1 data-i18n="headline">Make it feel<br><em>handmade.</em></h1>
+        </div>
+        <p class="intro-copy" data-i18n="introCopy">Transform graphs, diagrams, and ideas into expressive ink. Tune the character, keep the meaning.</p>
+      </section>
+
+      <section class="editor-grid" aria-label="Inkgraph studio">
+        <aside class="controls panel">
+          <div class="panel-heading"><span>01</span><h2 data-i18n="source">Source</h2><button class="more" title="More source options">•••</button></div>
+          <div class="source-tabs" role="tablist" aria-label="Source type">
+            <button class="source-tab active" data-source="graph" role="tab" data-i18n="graph">Graph</button>
+            <button class="source-tab" data-source="diagram" role="tab" data-i18n="diagram">Diagram</button>
+            <button class="source-tab" data-source="text" role="tab" data-i18n="text">Text</button>
+          </div>
+          <div class="input-wrap">
+            <label for="source-input" data-i18n="pasteSource">Paste a prompt or source</label>
+            <textarea id="source-input" rows="6">A quiet morning routine → coffee → deep work → a walk outside</textarea>
+            <span class="char-count" id="char-count">70 / 500</span>
+          </div>
+          <div class="or-rule"><span>or</span></div>
+          <button class="dropzone" id="dropzone"><span class="upload-icon">↥</span><span><strong>Drop an image here</strong><small>PNG, JPG, SVG up to 10MB</small></span><span class="browse">Browse</span></button>
+          <div class="recent-row"><span>Recent</span><button class="recent-thumb active" data-example="routine" aria-label="Load routine example"><span>↗</span></button><button class="recent-thumb" data-example="network" aria-label="Load network example"><span>✣</span></button><button class="recent-thumb" data-example="journey" aria-label="Load journey example"><span>◌</span></button><button class="add-thumb" aria-label="Add recent item">+</button></div>
+
+          <div class="control-group">
+            <div class="panel-heading compact"><span>02</span><h2 data-i18n="character">Character</h2></div>
+            <div class="style-list" role="radiogroup" aria-label="Ink character">
+              <button class="style-option selected" data-style="sumi" role="radio" aria-checked="true"><span class="style-swatch sumi-swatch"></span><span><strong>Sumi wash</strong><small>Soft, gestural &amp; weighted</small></span><span class="check">✓</span></button>
+              <button class="style-option" data-style="pen" role="radio" aria-checked="false"><span class="style-swatch pen-swatch"></span><span><strong>Field notes</strong><small>Precise, quick &amp; dry</small></span><span class="check">✓</span></button>
+              <button class="style-option" data-style="brush" role="radio" aria-checked="false"><span class="style-swatch brush-swatch"></span><span><strong>Dry brush</strong><small>Textured, raw &amp; loose</small></span><span class="check">✓</span></button>
+            </div>
+            <div class="tradition-picker" role="radiogroup" aria-label="Ink tradition"><span>Tradition</span><button class="tradition selected" role="radio" aria-checked="true">Chinese ink</button><button class="tradition" role="radio" aria-checked="false">Western pen</button></div>
+            </div>
+          <div class="control-group sliders">
+            <label>Ink density <output id="density-output">64%</output><input id="density" type="range" min="20" max="100" value="64"></label>
+            <label>Wobble <output id="wobble-output">18%</output><input id="wobble" type="range" min="0" max="50" value="18"></label>
+          </div>
+        </aside>
+
+        <section class="preview panel">
+          <div class="preview-toolbar"><div class="canvas-name"><span class="live-dot"></span><span id="canvas-name">morning-routine</span><button class="pencil" title="Rename canvas" aria-label="Rename canvas">✎</button></div><div class="toolbar-actions"><button class="tool-btn" title="Undo" aria-label="Undo">↶</button><button class="tool-btn" title="Redo" aria-label="Redo">↷</button><span class="toolbar-divider"></span><button class="export-btn" id="export-btn"><span>↓</span> <span data-i18n="export">Export</span> <small>⌘ E</small></button></div></div>
+          <div class="canvas-stage" id="canvas-stage">
+            <div class="paper" id="paper">
+              <div class="paper-label">MORNING ROUTINE <span>01—04</span></div>
+              <svg id="ink-svg" viewBox="0 0 760 500" role="img" aria-label="Ink style graph preview">
+                <defs><filter id="rough"><feTurbulence baseFrequency="0.025" numOctaves="2" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="1.6"/></filter><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none"/></marker></defs>
+                <g class="ink-drawing" filter="url(#rough)">
+                  <path class="connector" d="M165 242 C225 220 230 145 290 145" marker-end="url(#arrow)"/><path class="connector" d="M370 145 C430 145 426 240 485 242" marker-end="url(#arrow)"/><path class="connector" d="M565 242 C600 243 608 320 644 320" marker-end="url(#arrow)"/>
+                  <path class="node node-a" d="M65 205 Q115 187 166 207 L163 276 Q112 292 68 273 Z"/><path class="node node-b" d="M286 111 Q329 95 371 114 L370 176 Q327 192 288 176 Z"/><path class="node node-c" d="M486 207 Q528 190 570 209 L568 276 Q526 290 488 274 Z"/><path class="node node-d" d="M644 290 Q690 276 728 296 L726 355 Q685 371 647 353 Z"/>
+                  <text x="115" y="243">WAKE</text><text x="328" y="148">COFFEE</text><text x="528" y="244">DEEP WORK</text><text x="685" y="329">WALK</text>
+                  <path class="annotation" d="M78 330 q28 16 58 0"/><text class="note" x="80" y="357">start gently</text><path class="annotation" d="M286 229 q35 -16 69 0"/><text class="note" x="294" y="258">the first ritual</text><path class="annotation" d="M490 335 q35 14 76 -2"/><text class="note" x="497" y="365">let the day open</text>
+                </g>
+              </svg>
+              <div class="paper-stamp">INKGRAPH<br><span>26.08.28</span></div>
+            </div>
+            <div class="canvas-meta"><span>Graph · 4 nodes · 3 connections</span><span><button class="zoom-btn" id="zoom-out" aria-label="Zoom out">−</button><strong id="zoom-value">100%</strong><button class="zoom-btn" id="zoom-in" aria-label="Zoom in">+</button></span></div>
+          </div>
+        </section>
+      </section>
+      <section class="tip-strip"><span class="tip-icon">✦</span><span><strong>Inkgraph thinks in layers.</strong> Your structure stays editable beneath every expressive mark.</span><button>Learn about layers <span>→</span></button></section>
+    </main>
+    <footer><span>© 2026 INKGRAPH</span><span>Made for curious minds <i>✦</i></span><span>v0.8.2</span></footer>
+  </div>
+  <dialog id="auth-dialog" class="auth-dialog">
+    <form method="dialog" id="auth-form">
+      <button class="dialog-close" value="cancel" aria-label="Close">×</button>
+      <p class="eyebrow">INKGRAPH / ACCOUNT</p>
+      <h2 data-i18n="localLogin">Local login</h2>
+      <label><span data-i18n="email">Email</span><input id="auth-email" type="email" autocomplete="email" required maxlength="254"></label>
+      <label><span data-i18n="password">Password</span><input id="auth-password" type="password" autocomplete="current-password" required minlength="12" maxlength="128"></label>
+      <div class="auth-actions"><button type="button" id="register-button" data-i18n="createAccount">Create account</button><button type="submit" id="login-submit" class="primary-button" data-i18n="login">Log in</button></div>
+      <p id="auth-status" class="auth-status" role="status"></p>
+    </form>
+  </dialog>
+  <script src="app.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script>function googleTranslateElementInit() { new google.translate.TranslateElement({ pageLanguage: 'en', autoDisplay: false }, 'google_translate_element'); }</script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+</body>
+</html>
